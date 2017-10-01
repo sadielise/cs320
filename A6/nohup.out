@@ -1,0 +1,6 @@
+amount: 200 coins: [1, 2, 5, 10, 25, 50, 100] ways: 61984
+0.06user 0.00system 0:00.07elapsed 94%CPU (0avgtext+0avgdata 6292maxresident)k
+0inputs+8outputs (0major+786minor)pagefaults 0swaps
+amount: 1000 coins: [1, 2, 5, 10, 25, 50, 100] ways: 190469796
+time: 98.20329
+recursive calls: 192574217

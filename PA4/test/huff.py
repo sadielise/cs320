@@ -1,0 +1,118 @@
+#! /usr/bin/python
+import sys
+
+# heaps here are 1 based, so read puts None in 0th element
+def readNums(fnm):
+   f = open(fnm)
+   lst = [None]
+   for line in f:
+      l = line.strip().split(" ")
+      for s in l:
+        lst.append(int(s))
+   return lst
+
+# heaps here are 1 based
+def parent(i): return i/2
+def left(i): return 2*i
+def right(i): return 2*i+1
+
+# so for their length element 0 does not count
+def hLen(A): return len(A)-1
+
+def heapify(A, i, n): 
+	"""
+	Build a Min Heap at i
+	n is the number of elements in the heap
+	A[i] is "almost a heap" (except root i), 
+	Make A[i] a heap 
+	"""
+	minVal = i
+	l = left(i)
+	r = right(i)
+	if l <= n and A[l] < A[i]:
+		minVal = l
+	if r <= n and A[r] < A[minVal]:
+		minVal = r
+	if minVal != i:
+		A = swap(A,i,minVal)
+		heapify(A,minVal,n)
+
+# build a Min heap A from an unsorted array
+def buildHeap(A): 
+	size = hLen(A)
+	for x in range(size//2,0,-1):
+		heapify(A,x,size)  
+
+# extract minimum value from heap
+def heapExtractMin(A):
+	root = A[1]
+	A[1] = A[hLen(A)]
+	A.pop(hLen(A))
+	heapify(A, 1, hLen(A))
+	return root
+
+# insert value into heap
+def heapInsert(A,v):
+	A.append(v)
+	currIndex = len(A) - 1
+	par = parent(currIndex)
+	while par >= 1 and A[currIndex] < A[par]:
+		A = swap(A,par,currIndex)
+		currIndex = par
+		par = parent(par)
+	return A
+
+# swap elements x and y in array A
+def swap(A,x,y):
+	A[x], A[y] = A[y], A[x]
+	return A
+
+# read in tuples from a file 
+def readTups(fnm):
+  f = open(fnm)
+  ll = [None]
+  for line in f:
+    l = line.strip().split(" ")
+    for t in l:
+      freq,val  = t.split(",")
+      ll.append((int(freq),val))
+  return ll
+
+# create tuple from heap
+def makeTup(A):
+  tree = A
+  for i in range(1,len(tree)-1):
+    t1 = heapExtractMin(tree)
+    t2 = heapExtractMin(tree)
+    t3 = (t1[0]+t2[0],t1,t2)
+    heapInsert(tree,t3)
+  return tree  
+
+# create huffman code from heap
+def huffman(A):
+  tup = makeTup(A)
+  d = {}
+  dict = traverse(tup[1], '', d)
+  return dict
+
+# traverse tuple and create dictionary
+def traverse(tup, string, d):
+  # check size of tuple
+  if(len(tup)==2):
+    tempDict = {tup[1]: string}
+    d.update(tempDict)
+  elif(len(tup)==3):
+    traverse(tup[1], (string + '0'), d)
+    traverse(tup[2], (string + '1'), d)
+  return d
+
+if __name__ == "__main__":
+  global db
+  db = len(sys.argv)>2
+  A = readTups(sys.argv[1])
+  buildHeap(A)
+  dict = huffman(A)
+  print "huff:", dict
+
+
+

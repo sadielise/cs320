@@ -1,0 +1,87 @@
+#! /usr/bin/python
+import sys
+import huff.py
+
+def read(fnm):
+  f = open(fnm)
+  ll = []
+  for line in f:
+    l = line.strip().split(" ")
+    for t in l:
+      freq,val  = t.split(",")
+      ll.append((int(freq),val))
+  return ll
+
+def play():
+  # create tuples and see how they compare
+  t1 = (14,'a')
+  t2 = (16,'b')
+  t3 = (16,'c')
+  if t1<t2:
+    print t1, "<", t2
+  else:
+    print "huh?"
+
+  if t2<t3:
+    print t2, "<", t3
+  else:
+    print t2, ">=", t3
+
+  if t3<t2:
+    print t3, "<", t2
+  else:
+    print t3, ">=", t2
+
+  # build tuples from tuples
+  # and see how they compare
+  t4 = (t2[0]+t3[0], t2, t3)
+  print "t4:", t4
+
+  t5 = (t4[0], 'e', 'f', 'g')
+
+  if t1<t4:
+    print t1, "<", t4
+  else:
+    print "what?"
+
+  if t5==t4:
+    print 'whao!!'
+  else:
+    if t5<t4:
+      print "no error??"
+
+  if 3<('a','b'):
+    print " 3 < (a,b)"
+  else:
+    print '(a,b) >= 3'
+
+  # length and type of tuples
+  print t4, "len", len(t4), "type", type(t4)
+  t6 = (3)
+  print t6, type(t6)  
+  if type(t6)=='tuple':
+     print "len t6", len(t6)
+  else:
+     print "t6 not a tuple"
+
+  t7 = (45,'a')
+  t8 = (13,'c')
+  t9 = (14,'c')
+  t10 = (16,'d')
+  t11 = (9,'e')
+  t12 = (5,'f')
+  print "is t7 < t8?", t7 < t8
+  print "is t8 < t9?", t8 < t9
+  print "is t9 < t10?", t9 < t10
+  print "is t10 < t11?", t10 < t11
+  print "is t11 < t12?", t11 < t12
+
+
+if __name__ == "__main__":
+  ll = read(sys.argv[1])
+  db = len(sys.argv)>2
+  if db:
+    print ll
+  play()
+
+

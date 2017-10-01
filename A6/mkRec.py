@@ -1,0 +1,52 @@
+#! /usr/bin/python
+import sys
+import time
+
+recursiveCount = 0
+numOfWays = 0
+
+# function to read in coin values
+def readCoins(fnm):
+	f = open(fnm)
+	lst = []
+	for line in f:
+		l = line.strip().split(" ")
+	for s in l:
+		lst.append(int(s))
+	return lst
+
+# recursive function
+def makeChange(target, coins, index):
+	global numOfWays
+	global recursiveCount
+
+	# increment recursive count
+	recursiveCount+=1
+
+	# base cases
+	if(target == 0):
+		numOfWays+=1
+	elif(index == 0):
+		if(target%coins[index] == 0):
+			numOfWays+=1
+	# recursive case
+	else:
+		# figure out how many times a coin fits into the target
+		i = target/(coins[index])
+
+		# loop through all options for how many times you use the coin
+		for x in range (0, i+1):
+			makeChange(target-(x*coins[index]), coins, index-1)
+	
+# main
+if __name__ == "__main__":
+	target = int(sys.argv[1])
+	coins = readCoins(sys.argv[2])
+	coins = sorted(coins)
+	startTime = time.clock()
+	makeChange(target, coins, len(coins)-1)
+	endTime = time.clock() - startTime
+	print "amount:", target, "coins:", coins, "ways:", numOfWays
+	#print "time:", endTime
+	#print "recursive calls:", recursiveCount
+
